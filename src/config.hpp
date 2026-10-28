@@ -7,6 +7,8 @@ struct Config {
     int eat = 5;
     int think = 5;
     bool quiet = false;
+    int wait = 1000;
+    int limit = 600000;
 };
 
 Config Parse(int argc, char* argv[]);

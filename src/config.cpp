@@ -26,6 +26,8 @@ Config Parse(int argc, char* argv[])
         else if (key == "--cycles") c.cycles = Number(value, 1, 1000000);
         else if (key == "--eat") c.eat = Number(value, 0, 60000);
         else if (key == "--think") c.think = Number(value, 0, 60000);
+        else if (key == "--wait") c.wait = Number(value, 1, 600000);
+        else if (key == "--limit") c.limit = Number(value, 1, 86400000);
         else throw std::runtime_error("Unknown option: " + key);
     }
     return c;
