@@ -11,6 +11,7 @@ struct Config {
     int limit = 600000;
     int seed = 1000;
     int student = -1;
+    int runs = 1;
     std::string csv = "data\\results.csv";
 };
 

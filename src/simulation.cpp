@@ -31,9 +31,11 @@ struct State {
     Result result;
     std::unique_ptr<Fork[]> forks;
     Worker args[64]{};
-    HANDLE threads[64]{}, stop = nullptr;
+    HANDLE threads[64]{};
+    HANDLE stop = nullptr;
     int count = 0;
-    std::atomic<int> errors{0}, violations{0};
+    std::atomic<int> errors{0};
+    std::atomic<int> violations{0};
     std::atomic<bool> deadline{false};
 
     explicit State(const Config& config) : c(config), forks(new Fork[c.n])
@@ -108,7 +110,9 @@ struct State {
 
 struct Pair {
     State& s;
-    int id, resources[2], held = 0;
+    int id;
+    int resources[2];
+    int held = 0;
     Pair(State& state, int philosopher) : s(state), id(philosopher)
     {
         resources[0] = std::min(id, (id + 1) % s.c.n);
@@ -157,7 +161,9 @@ DWORD WINAPI Work(LPVOID data)
 
     for (int cycle = 0; cycle < s.c.cycles && !s.Stopped(); ++cycle) {
         LogEvent("THINKING", "P%d", w.id);
+
         if (!s.Pause(thinking(rng))) break;
+
         LogEvent("WAITING", "P%d RESOURCES=%d,%d", w.id, w.id, (w.id + 1) % s.c.n);
         const double began = Elapsed();
         bool got = false, ate = false;
@@ -186,7 +192,7 @@ DWORD WINAPI Work(LPVOID data)
              "P%d COMPLETED=%d", w.id, stat.done);
     return 0;
 }
-} // namespace
+}
 
 Result Simulate(const Config& config)
 {

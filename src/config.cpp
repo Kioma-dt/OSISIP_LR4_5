@@ -34,6 +34,7 @@ Config Parse(int argc, char* argv[])
             seedGiven = true;
         }
         else if (key == "--student") c.student = Number(value, 0, 999);
+        else if (key == "--runs") c.runs = Number(value, 1, 100);
         else if (key == "--csv" && !value.empty()) c.csv = value;
         else throw std::runtime_error("Unknown option or empty value: " + key);
     }
