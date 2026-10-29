@@ -5,6 +5,7 @@
 #include <memory>
 #include <stdexcept>
 #include <utility>
+#include <random>
 
 namespace {
 void Require(bool ok, const char* api)
@@ -151,9 +152,12 @@ DWORD WINAPI Work(LPVOID data)
     auto& stat = s.result.workers[w.id];
     stat.tid = GetCurrentThreadId();
 
+    std::mt19937 rng(static_cast<uint32_t>(s.c.seed) + w.id);
+    std::uniform_int_distribution<int> thinking(0, s.c.think);
+
     for (int cycle = 0; cycle < s.c.cycles && !s.Stopped(); ++cycle) {
         LogEvent("THINKING", "P%d", w.id);
-        if (!s.Pause(s.c.think)) break;
+        if (!s.Pause(thinking(rng))) break;
         LogEvent("WAITING", "P%d RESOURCES=%d,%d", w.id, w.id, (w.id + 1) % s.c.n);
         const double began = Elapsed();
         bool got = false, ate = false;

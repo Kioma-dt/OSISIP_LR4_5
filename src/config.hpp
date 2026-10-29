@@ -9,6 +9,9 @@ struct Config {
     bool quiet = false;
     int wait = 1000;
     int limit = 600000;
+    int seed = 1000;
+    int student = -1;
+    std::string csv = "data\\results.csv";
 };
 
 Config Parse(int argc, char* argv[]);
