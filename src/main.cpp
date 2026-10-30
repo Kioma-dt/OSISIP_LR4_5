@@ -6,7 +6,7 @@
 #include <exception>
 
 
-//g++ -std=c++17 -O2 -Wall -Wextra src/main.cpp src/config.cpp src/simulation.cpp -o build/philosophers.exe
+//
 int main(int argc, char* argv[])
 {
     try {

@@ -44,8 +44,10 @@ inline void WriteResults(const Config& c, const Result& r, std::ostream& csv)
     for (int i = 0; i < c.n; ++i) {
         const auto& s = r.workers[i];
         row("WORKER", i, s);
-        total.done += s.done; total.samples += s.samples;
-        total.timeouts += s.timeouts; total.sum += s.sum;
+        total.done += s.done; 
+        total.samples += s.samples;
+        total.timeouts += s.timeouts;
+        total.sum += s.sum;
         total.aborted += s.aborted;
         total.maximum = std::max(total.maximum, s.maximum);
     }
