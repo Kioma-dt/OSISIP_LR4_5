@@ -4,10 +4,10 @@
 static int Number(const std::string& text, int low, int high)
 {
     std::size_t used = 0;
-    const long long n = std::stoll(text, &used);
+    const int n = std::stoi(text, &used);
     if (used != text.size() || n < low || n > high)
         throw std::runtime_error("Invalid value: " + text);
-    return static_cast<int>(n);
+    return n;
 }
 
 Config Parse(int argc, char* argv[])
@@ -27,8 +27,8 @@ Config Parse(int argc, char* argv[])
         }
         else if (key == "--eat") c.eat = Number(value, 0, 60000);
         else if (key == "--think") c.think = Number(value, 0, 60000);
-        else if (key == "--wait") c.wait = Number(value, 1, 600000);
-        else if (key == "--limit") c.limit = Number(value, 1, 86400000);
+        else if (key == "--wait") c.wait = Number(value, 1, 60000);
+        else if (key == "--limit") c.limit = Number(value, 1, 3600000);
         else if (key == "--seed") {
             c.seed = Number(value, 0, 2147483647);
             seedGiven = true;

@@ -8,7 +8,7 @@
 
 inline std::ofstream OpenCsv(const std::string& path)
 {
-    std::ofstream file(path, std::ios::app | std::ios::ate);
+    std::ofstream file(path, std::ios::app);
     if (!file) throw std::runtime_error("Cannot open CSV: " + path);
     file << std::fixed << std::setprecision(6);
     if (file.tellp() == std::streampos(0))

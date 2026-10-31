@@ -81,26 +81,34 @@ struct State {
     bool Pause(DWORD ms)
     {
         if (Stopped()) return false;
+
         const DWORD timeout = static_cast<DWORD>(
             std::min<double>(ms, std::max(1.0, c.limit - Elapsed())));
         const DWORD r = WaitForSingleObject(stop, timeout);
+
         if (r == WAIT_FAILED) { Fail("WaitForSingleObject"); return false; }
+        
         return r == WAIT_TIMEOUT && !Stopped();
     }
 
     void Finish()
     {
         if (!stop) return;
+
         if (count && WaitForMultipleObjects(count, threads, TRUE, INFINITE)
                      != WAIT_OBJECT_0) {
             ReportWinError("WaitForMultipleObjects", GetLastError());
             std::abort();
         }
+
         for (int i = 0; i < count; ++i)
             if (!CloseHandle(threads[i])) Fail("CloseHandle");
+
         count = 0;
+
         for (int i = 0; i < c.n; ++i)
             Check(forks[i].owner == -1, -1, i);
+
         HANDLE h = std::exchange(stop, nullptr);
         if (!CloseHandle(h)) Fail("CloseHandle");
     }
